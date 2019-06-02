@@ -1,0 +1,23 @@
+package com.dataflair.hd;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Partitioner;
+
+public class EmpInfoPartitioner extends Partitioner <Text, Text>
+{
+	@Override
+	public int getPartition(Text key, Text value, int numReduceTasks)
+	{
+		int partitionNo = 0;
+		String [] tokens = value.toString().split("\\t");//OR String[] tokens=0;
+		String gender = tokens[3];
+
+		if(numReduceTasks != 0)//OR if (numReducerTask=2)
+		{
+			if(gender.equals("female"))
+				partitionNo = 0;
+			else
+				partitionNo = 1;
+		}
+		return partitionNo;
+	}
+}
